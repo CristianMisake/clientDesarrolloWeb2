@@ -1,0 +1,63 @@
+<div class="row mt-20">
+    <form class="col m4 s12" [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+        <div class="input-field">
+            <i class="material-icons prefix">person</i>
+            <input type="text" id="name" formControlName="name"/>
+            <label for="name" [ngClass]="{'active': clienteForm.controls.name.value.length > 0 }">Nombre</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">person_outline</i>
+            <input type="text" id="user" formControlName="user"  [readonly]="edit"/>
+            <label for="user" [ngClass]="{'active': clienteForm.controls.user.value.length > 0 }">Usuario</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">lock</i>
+            <input type="password" id="password" formControlName="password"/>
+            <label for="password" [ngClass]="{'active': clienteForm.controls.password.value.length > 0 }">Contraseña</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">lock_outline</i>
+            <input type="password" id="confirmPassword" formControlName="confirmPassword"/>
+            <label for="confirmPassword" [ngClass]="{'active': clienteForm.controls.confirmPassword.value !== '' }">Confirmar contraseña</label>
+        </div>
+        <div class="center-align">
+            <button *ngIf="!edit" type="submit" class="waves-effect waves-light btn-small" [disabled]="clienteForm.invalid">
+                <i class="material-icons left">save</i> Agregar
+            </button>
+            <button *ngIf="edit" type="button" class="waves-effect waves-light btn-small mr-10" (click)="onUpdate()" [disabled]="clienteForm.invalid">
+                <i class="material-icons left">edit</i> Actualizar
+            </button>
+            <button *ngIf="edit" type="button" class="waves-effect waves-light btn-small red" (click)="onCancel()">
+                <i class="material-icons left">cancel</i> Cancelar
+            </button>
+        </div>
+    </form>
+    <div class="col m8 s12">
+        <table class="responsive-table highlight centered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cliente of clientes">
+                    <td>{{cliente.id}}</td>
+                    <td>{{cliente.name}}</td>
+                    <td>{{cliente.user}}</td>
+                    <td>
+                        <button class="btn-floating blue mr-10" (click)="onEdit(cliente)"><i class="material-icons">edit</i></button>
+                        <button class="btn-floating red" (click)="onDelete(cliente)"><i class="material-icons">delete</i></button>
+                    </td>
+                </tr>
+                <tr *ngIf="clientes.length == 0">
+                    <td colspan="4">
+                        No hay información disponible
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

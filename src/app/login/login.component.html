@@ -1,0 +1,24 @@
+<!-- Form Section -->
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col">
+            <div class="input-field">
+                <i class="material-icons prefix">person</i>
+                <input type="text" id="username" formControlName="user"/>
+                <label for="username">Usuario</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-field">
+                <i class="material-icons prefix">lock</i>
+                <input type="password" id="password" formControlName="password"/>
+                <label for="password">Contraseña</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-success" [disabled]="loginForm.invalid">Submit</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,71 @@
+<div class="row mt-20">
+    <form class="col m4 s12" [formGroup]="platoForm" (ngSubmit)="onSubmit()">
+        <div class="input-field">
+            <i class="material-icons prefix">person</i>
+            <input type="text" id="nombre" formControlName="nombre"/>
+            <label for="nombre" [ngClass]="{'active': platoForm.controls.nombre.value }">Nombre</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">person</i>
+            <textarea id="descripcion" class="materialize-textarea" formControlName="descripcion" cols="30" rows="10"></textarea>
+            <label for="descripcion" [ngClass]="{'active': platoForm.controls.descripcion.value }">Descripción</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">person</i>
+            <input type="number" id="valor" formControlName="valor"/>
+            <label for="valor" [ngClass]="{'active': platoForm.controls.valor.value }">Valor</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">person</i>
+            <select id="idCategoria" formControlName="idCategoria">
+              <option value="">Escoja una categoria</option>
+              <option *ngFor="let categoria of categorias" value="{{categoria.id}}">{{categoria.nombre}}</option>
+            </select>
+            <label for="idCategoria">Categoria</label>
+        </div>
+        
+        <div class="center-align">
+            <button *ngIf="!edit" type="submit" class="waves-effect waves-light btn-small" [disabled]="platoForm.invalid">
+                <i class="material-icons left">save</i> Agregar
+            </button>
+            <button *ngIf="edit" type="button" class="waves-effect waves-light btn-small mr-10" (click)="onUpdate()" [disabled]="platoForm.invalid">
+                <i class="material-icons left">edit</i> Actualizar
+            </button>
+            <button *ngIf="edit" type="button" class="waves-effect waves-light btn-small red" (click)="onCancel()">
+                <i class="material-icons left">cancel</i> Cancelar
+            </button>
+        </div>
+    </form>
+    <div class="col m8 s12">
+        <table class="responsive-table highlight centered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Valor</th>
+                    <th>Categoria</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let plato of platos">
+                    <td>{{plato.id}}</td>
+                    <td>{{plato.nombre}}</td>
+                    <td>{{plato.descripcion}}</td>
+                    <td>{{ plato.valor | currency: '$' }}</td>
+                    <td>{{ plato.idCategoria | CategoriaName:categorias }}</td>
+                    <td>
+                        <button class="btn-floating blue mr-10" (click)="onEdit(plato)"><i class="material-icons">edit</i></button>
+                        <button class="btn-floating red" (click)="onDelete(plato)"><i class="material-icons">delete</i></button>
+                    </td>
+                </tr>
+                <tr *ngIf="platos.length == 0">
+                    <td colspan="4">
+                        No hay información disponible
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

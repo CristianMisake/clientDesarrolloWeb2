@@ -28,9 +28,14 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/materialize-css/dist/css/materialize.min.css",
+              "node_modules/material-icons/iconfont/material-icons.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/materialize-css/dist/js/materialize.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -123,6 +128,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "client"
+    }
+  },
+  "defaultProject": "client",
+  "cli": {
+    "analytics": "651c1294-c718-4399-bb64-d2cfbcf3892e"
+  }
 }
