@@ -1,0 +1,35 @@
+<div class="row mt-40">
+    <form [formGroup]="form">
+        <div class="col s12 m6">
+            <div class="input-field">
+                <i class="material-icons prefix">person</i>
+                <select id="idCategoria" formControlName="idCategoria">
+                  <option value="">Todos los platos</option>
+                  <option *ngFor="let categoria of categorias" value="{{categoria.id}}">{{categoria.nombre}}</option>
+                </select>
+                <label for="idCategoria">Categoria</label>
+            </div>
+        </div>
+        <div class="col s12 m6 right-align">
+            <button (click)="EscogerPedido()" type="button" class="waves-effect waves-light btn-small green">
+                <i class="material-icons left">add_shopping_cart</i> Pedido
+            </button>
+        </div>
+    </form>
+</div>
+<div class="row mt-40">
+    <div class="col s12 m6 l4" *ngFor="let plato of platos | PlatosCategoria:form.controls.idCategoria.value">
+        <div class="card mx-10">
+            <div class="card-content">
+                <span class="card-title">{{plato.nombre}}</span>
+                <p>{{plato.descripcion}}</p>
+                <span>{{plato.valor | currency: '$'}}</span>
+            </div>
+            <div class="card-action center-align">
+                <button *ngIf="!plato.seleted" class="waves-effect waves-light btn-small blue" (click)="seleccionar(plato)">Seleccionar</button>
+                <button *ngIf="plato.seleted" class="waves-effect waves-light btn-small red" (click)="seleccionar(plato)">Selecionado</button>
+            </div>
+        </div>
+    </div>
+</div>
+<app-pedido [platos]="platosSelect" [categorias]="categorias" (cancelar)="cancelar()" (pagar)="pagar()"></app-pedido>

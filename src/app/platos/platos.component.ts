@@ -84,9 +84,7 @@ export class PlatosComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.platoForm.invalid) {
-      return;
-    }
+    if (this.platoForm.invalid) return;
     //información
     this.dataService.sendPostRequest('plato/create', this.platoForm.value).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+//servicios
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @Input() isAdmin: Boolean;
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
+  }
+  
+  cerrarSession(){
+    this.dataService.closeSession();
   }
 
 }

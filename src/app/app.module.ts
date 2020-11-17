@@ -13,8 +13,11 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { CategoriasComponent } from './categorias/categorias.component';
 import { PlatosComponent } from './platos/platos.component';
+import { MenuComponent } from './menu/menu.component';
+import { PedidoComponent } from './pedido/pedido.component';
 //pipes
 import { CategoriaPipe } from './pipes/categoria.pipe';
+import { PlatoPipe } from './pipes/platos.pipe';
 
 
 @NgModule({
@@ -27,7 +30,10 @@ import { CategoriaPipe } from './pipes/categoria.pipe';
     ClientesComponent,
     CategoriasComponent,
     PlatosComponent,
-    CategoriaPipe
+    MenuComponent,
+    PedidoComponent,
+    CategoriaPipe,
+    PlatoPipe,
   ],
   imports: [
     BrowserModule,

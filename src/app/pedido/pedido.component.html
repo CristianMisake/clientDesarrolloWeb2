@@ -1,0 +1,32 @@
+<!-- Modal Structure -->
+<div id="modalPedido" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Pedido</h4>
+        <table class="responsive-table highlight centered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let plato of platos">
+                    <td>{{plato.nombre}}</td>
+                    <td>{{plato.idCategoria | CategoriaName:categorias}}</td>
+                    <td>{{ plato.valor | currency: '$' }}</td>
+                </tr>
+                <tr *ngIf="platos.length == 0">
+                    <td colspan="3">
+                        No hay información disponible
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a class="pointer waves-effect waves-green btn-flat" (click)="PagarPedido()">Pagar</a>
+        <a class="pointer waves-effect waves-green btn-flat" (click)="CancelarPedido()">Cancelar</a>
+        <a class="pointer modal-close waves-effect waves-green btn-flat">Salir</a>
+    </div>
+</div>

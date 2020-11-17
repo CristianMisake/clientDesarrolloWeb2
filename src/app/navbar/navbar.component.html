@@ -1,10 +1,24 @@
 <nav class="nav-extended">
     <div class="nav-content">
-        <ul class="tabs tabs-transparent">
+        <ul class="tabs tabs-transparent" *ngIf="isAdmin">
           <li class="tab"><a routerLink="/homeAdmin">Home</a></li>
           <li class="tab"><a routerLinkActive="active" routerLink="/homeAdmin/clientes">Clientes</a></li>
           <li class="tab"><a routerLinkActive="active" routerLink="/homeAdmin/categorias">Categorias</a></li>
           <li class="tab"><a routerLinkActive="active" routerLink="/homeAdmin/platos">Platos</a></li>
+          <li class="tab right">
+            <button class="waves-effect waves-light btn-small red" (click)="cerrarSession()">
+              Cerrar Session
+            </button>
+          </li>
+        </ul>
+        <ul class="tabs tabs-transparent" *ngIf="!isAdmin">
+          <li class="tab"><a routerLink="/home">Home</a></li>
+          <li class="tab"><a routerLinkActive="active" routerLink="/home/menu">Menu</a></li>
+          <li class="tab right">
+            <button class="waves-effect waves-light btn-small red" (click)="cerrarSession()">
+              Cerrar Session
+            </button>
+          </li>
         </ul>
     </div>
 </nav>

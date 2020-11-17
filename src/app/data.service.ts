@@ -19,7 +19,7 @@ export class DataService {
         })
     };
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) { }
+    constructor(private httpClient: HttpClient, private router: Router) { }
 
     public sendGetRequest(url:string) {
         return this.httpClient.get(`${this.REST_API_SERVER}/${url}`, this.httpOptions);
@@ -48,6 +48,11 @@ export class DataService {
             if (navigate) this.router.navigate([urlGo]);
         });
     };
+    
     //manejo de localStorage
     public tokenSetter = (token:string) => localStorage.setItem('access_token', token);
+    public closeSession = () => {
+        localStorage.clear();
+        this.router.navigate(['']);
+    }
 }

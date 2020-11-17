@@ -22,4 +22,5 @@ export interface interPlato {
     descripcion: string
     valor: number
     idCategoria: number
+    seleted?: boolean
 }
