@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
 //interfaces
 import { interCliente, interResponse } from '../interfaces/interService';
+declare var alertify: any;
 
 @Component({
   selector: 'app-clientes',
@@ -21,8 +22,6 @@ export class ClientesComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
-    //validar session
-    //this.dataService.verifySession();
     //llenar tabla
     this.clientes = [];
     this.dataService.sendPostRequest('usuario/list', {}).subscribe((resp: interResponse)=>this.clientes = resp.datos);
@@ -31,17 +30,18 @@ export class ClientesComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       user: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onDelete(cliente:interCliente) {
-    this.deleted = true;
-    this.dataService.sendPostRequest('usuario/delete', { id: cliente.id }).subscribe((resp: interResponse)=>{
-      if (resp.empty) return console.log(resp.mensaje);
-      this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
-    })
+    alertify.confirm('Aviso', '¿Desea eliminar este cliente?', () => {
+      this.deleted = true;
+      this.dataService.sendPostRequest('usuario/delete', { id: cliente.id }).subscribe((resp: interResponse)=>{
+        if (resp.empty) return console.log(resp.mensaje);
+        this.onReset();
+        alertify.notify('Se ha eliminado la información.', 'error', 2);
+      })
+    }, () => alertify.notify('Se ha cancelado la eliminación.', 'success', 2));
   }
 
   onEdit(cliente:interCliente) {
@@ -50,7 +50,6 @@ export class ClientesComponent implements OnInit {
       name: cliente.name,
       user: cliente.user,
       password: '',
-      confirmPassword: '',
     });
     this.clientSelect = cliente.id;
   }
@@ -65,7 +64,7 @@ export class ClientesComponent implements OnInit {
     this.dataService.sendPostRequest('usuario/update', { ...this.clienteForm.value, id:this.clientSelect }).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha actualizado la información.', 'success', 2);
     })
   }
 
@@ -81,9 +80,8 @@ export class ClientesComponent implements OnInit {
     this.dataService.sendPostRequest('usuario/create', this.clienteForm.value).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha guardado la información.', 'success', 2);
     })
-    // display form values on success
   }
 
   onReset() {
@@ -96,7 +94,6 @@ export class ClientesComponent implements OnInit {
       name: '',
       user: '',
       password: '',
-      confirmPassword: '',
     });
   }
 

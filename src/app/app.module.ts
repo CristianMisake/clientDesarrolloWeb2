@@ -18,7 +18,8 @@ import { PedidoComponent } from './pedido/pedido.component';
 //pipes
 import { CategoriaPipe } from './pipes/categoria.pipe';
 import { PlatoPipe } from './pipes/platos.pipe';
-
+import { PlatoSeletedPipe } from './pipes/platosSeleted.pipe';
+import { BienvenidosComponent } from './bienvenidos/bienvenidos.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,8 @@ import { PlatoPipe } from './pipes/platos.pipe';
     PedidoComponent,
     CategoriaPipe,
     PlatoPipe,
+    PlatoSeletedPipe,
+    BienvenidosComponent,
   ],
   imports: [
     BrowserModule,

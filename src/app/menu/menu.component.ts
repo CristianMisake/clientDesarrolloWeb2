@@ -5,6 +5,7 @@ import { DataService } from '../data.service';
 //interfaces
 import { interCategoria, interPlato, interResponse } from '../interfaces/interService';
 declare var $: any;
+declare var alertify: any;
 
 @Component({
   selector: 'app-menu',
@@ -41,24 +42,36 @@ export class MenuComponent implements OnInit {
 
   seleccionar(plato: interPlato) {
     plato.seleted = !plato.seleted;
+    alertify.notify(`Se ha ${(plato.seleted) ? 'agregado' : 'quitado'} el plato "${plato.nombre}"`, 'success', 2);
   }
 
   EscogerPedido() {
     this.platosSelect = [...this.platos.filter(e => e.seleted)]
     $('#modalPedido').modal("open");
   }
+
+  TotalPedidoSelect() {
+    return this.platos.filter(e => e.seleted).length;
+  }
   
   cancelar() {
+    alertify.confirm('Aviso', '¿Desea cancelar este pedido?', () => {
+      this.cerrarModal();
+    }, () => alertify.notify('No se ha cancelado el pedido.', 'success', 2));
+  }
+
+  cerrarModal() {
     this.onReset();
     $('#modalPedido').modal("close");
   }
 
   pagar() {
     let platosIn = [];
-    this.platosSelect.map(e => platosIn.push(e.id));
-    this.dataService.sendPostRequest('pedido/create', { platos: platosIn }).subscribe((resp: interResponse) => {
-      console.log(resp)
-      this.cancelar();
+    this.platosSelect.map(e => platosIn.push({ id:e.id, cantidad:e.cantidad }));
+    if (platosIn.filter(e => !e.cantidad || e.cantidad <= 0).length > 0) return alertify.alert('Aviso', 'Coloque las cantidades de los pedidos mayores a 0.');
+    this.dataService.sendPostRequest('pedido/create', { platos: platosIn }).subscribe(() => {
+      this.cerrarModal();
+      alertify.notify('Se ha guardado el pedido.', 'success', 2);
     });
   }
 

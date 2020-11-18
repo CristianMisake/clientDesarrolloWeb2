@@ -12,21 +12,23 @@ export class DataService {
     private REST_API_SERVER = "http://localhost:3020/api";
     private tokenGetter = () => localStorage.getItem("access_token") ?? '';
 
-    private httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type':  'application/json',
-            Authorization: this.tokenGetter()
-        })
+    private httpOptions = () => {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+                Authorization: this.tokenGetter()
+            })
+        }
     };
 
-    constructor(private httpClient: HttpClient, private router: Router) { }
+    constructor(private httpClient: HttpClient, private router: Router, private route:ActivatedRoute) { }
 
     public sendGetRequest(url:string) {
-        return this.httpClient.get(`${this.REST_API_SERVER}/${url}`, this.httpOptions);
+        return this.httpClient.get(`${this.REST_API_SERVER}/${url}`, this.httpOptions());
     }
 
     public sendPostRequest(url:string, body:{}) {
-        return this.httpClient.post(`${this.REST_API_SERVER}/${url}`, body, this.httpOptions);
+        return this.httpClient.post(`${this.REST_API_SERVER}/${url}`, body, this.httpOptions());
     }
 
     public verifySession = () => {
@@ -50,7 +52,11 @@ export class DataService {
     };
     
     //manejo de localStorage
-    public tokenSetter = (token:string) => localStorage.setItem('access_token', token);
+    public openSession = (token:string, isAdmin:boolean) => {
+        localStorage.setItem('access_token', token);
+        this.router.navigate([(isAdmin) ? 'homeAdmin' : 'home'], { relativeTo: this.route });
+    }
+
     public closeSession = () => {
         localStorage.clear();
         this.router.navigate(['']);

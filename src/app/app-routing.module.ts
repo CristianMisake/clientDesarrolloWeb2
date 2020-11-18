@@ -10,12 +10,17 @@ import { CategoriasComponent } from './categorias/categorias.component';
 import { PlatosComponent } from './platos/platos.component';
 //sub componentes cliente
 import { MenuComponent } from './menu/menu.component';
+import { BienvenidosComponent } from './bienvenidos/bienvenidos.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: HomeClientComponent,
   children: [
+    {
+      path: '', // child route path
+      component: BienvenidosComponent, // child route component that the router renders
+    },
     {
       path: 'menu', // child route path
       component: MenuComponent, // child route component that the router renders
@@ -24,6 +29,10 @@ const routes: Routes = [
   },
   { path: 'homeAdmin', component: HomeAdminComponent,
   children: [
+    {
+      path: '', // child route path
+      component: BienvenidosComponent, // child route component that the router renders
+    },
     {
       path: 'clientes', // child route path
       component: ClientesComponent, // child route component that the router renders

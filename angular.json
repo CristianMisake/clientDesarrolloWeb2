@@ -30,11 +30,13 @@
             "styles": [
               "node_modules/materialize-css/dist/css/materialize.min.css",
               "node_modules/material-icons/iconfont/material-icons.scss",
+              "node_modules/alertifyjs/build/css/alertify.min.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/materialize-css/dist/js/materialize.min.js"
+              "node_modules/materialize-css/dist/js/materialize.min.js",
+              "node_modules/alertifyjs/build/alertify.min.js"
             ]
           },
           "configurations": {

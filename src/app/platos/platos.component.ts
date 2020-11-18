@@ -5,6 +5,7 @@ import { DataService } from '../data.service';
 //interfaces
 import { interCategoria, interPlato, interResponse } from '../interfaces/interService';
 declare var $: any;
+declare var alertify: any;
 
 @Component({
   selector: 'app-platos',
@@ -23,8 +24,6 @@ export class PlatosComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
-    //validar session
-    //this.dataService.verifySession();
     //llenar tabla
     this.platos = [];
     this.categorias = [];
@@ -45,12 +44,14 @@ export class PlatosComponent implements OnInit {
   }
 
   onDelete(plato:interPlato) {
-    this.deleted = true;
-    this.dataService.sendPostRequest('plato/delete', { id: plato.id }).subscribe((resp: interResponse)=>{
-      if (resp.empty) return console.log(resp.mensaje);
-      this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
-    })
+    alertify.confirm('Aviso', '¿Desea eliminar este plato?', () => {
+      this.deleted = true;
+      this.dataService.sendPostRequest('plato/delete', { id: plato.id }).subscribe((resp: interResponse)=>{
+        if (resp.empty) return console.log(resp.mensaje);
+        this.onReset();
+        alertify.notify('Se ha eliminado la información.', 'error', 2);
+      })
+    }, () => alertify.notify('Se ha cancelado la eliminación.', 'success', 2));
   }
 
   onEdit(plato:interPlato) {
@@ -75,7 +76,7 @@ export class PlatosComponent implements OnInit {
     this.dataService.sendPostRequest('plato/update', { ...this.platoForm.value, id:this.platoSelect }).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha actualizado la información.', 'success', 2);
     })
   }
 
@@ -89,9 +90,8 @@ export class PlatosComponent implements OnInit {
     this.dataService.sendPostRequest('plato/create', this.platoForm.value).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha guardado la información.', 'success', 2);
     })
-    // display form values on success
   }
 
   onReset() {

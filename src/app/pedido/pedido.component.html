@@ -1,23 +1,25 @@
 <!-- Modal Structure -->
 <div id="modalPedido" class="modal modal-fixed-footer">
     <div class="modal-content">
-        <h4>Pedido</h4>
+        <h4>Pedido ({{ platos | PlatosSeleted }})</h4>
         <table class="responsive-table highlight centered">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Categoria</th>
+                    <th>Cantidad</th>
                     <th>Valor</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let plato of platos">
                     <td>{{plato.nombre}}</td>
-                    <td>{{plato.idCategoria | CategoriaName:categorias}}</td>
+                    <td>{{ plato.idCategoria | CategoriaName:categorias }}</td>
+                    <td><input type="number" min="0" [(ngModel)]="plato.cantidad"></td>
                     <td>{{ plato.valor | currency: '$' }}</td>
                 </tr>
                 <tr *ngIf="platos.length == 0">
-                    <td colspan="3">
+                    <td colspan="4">
                         No hay información disponible
                     </td>
                 </tr>
@@ -25,6 +27,7 @@
         </table>
     </div>
     <div class="modal-footer">
+        <p class="btn-flat left">total a pagar: {{ CalculeTotal() | currency: '$' }}</p>
         <a class="pointer waves-effect waves-green btn-flat" (click)="PagarPedido()">Pagar</a>
         <a class="pointer waves-effect waves-green btn-flat" (click)="CancelarPedido()">Cancelar</a>
         <a class="pointer modal-close waves-effect waves-green btn-flat">Salir</a>

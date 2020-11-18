@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
 //servicio
 import { DataService } from '../data.service';
 //interfaces
@@ -16,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
     //validar session
@@ -37,9 +36,7 @@ export class LoginComponent implements OnInit {
     //información
     this.dataService.sendPostRequest('usuario/login', this.loginForm.value).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
-      this.dataService.tokenSetter(resp.datos.token);
-      this.router.navigate(['home'], { relativeTo: this.route });
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      this.dataService.openSession(resp.datos.token, resp.datos.is_admin);
     })
     // display form values on success
   }

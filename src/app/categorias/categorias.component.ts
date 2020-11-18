@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
 //interfaces
 import { interCategoria, interResponse } from '../interfaces/interService';
+declare var alertify: any;
 
 @Component({
   selector: 'app-categorias',
@@ -21,8 +22,6 @@ export class CategoriasComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
-    //validar session
-    //this.dataService.verifySession();
     //llenar tabla
     this.categorias = [];
     this.dataService.sendPostRequest('categoria/list', {}).subscribe((resp: interResponse)=>this.categorias = resp.datos);
@@ -33,12 +32,14 @@ export class CategoriasComponent implements OnInit {
   }
 
   onDelete(categoria:interCategoria) {
-    this.deleted = true;
-    this.dataService.sendPostRequest('categoria/delete', { id: categoria.id }).subscribe((resp: interResponse)=>{
-      if (resp.empty) return console.log(resp.mensaje);
-      this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
-    })
+    alertify.confirm('Aviso', '¿Desea eliminar esta categoría?', () => {
+      this.deleted = true;
+      this.dataService.sendPostRequest('categoria/delete', { id: categoria.id }).subscribe((resp: interResponse)=>{
+        if (resp.empty) return console.log(resp.mensaje);
+        this.onReset();
+        alertify.notify('Se ha eliminado la información.', 'error', 2);
+      })
+    }, () => alertify.notify('Se ha cancelado la eliminación.', 'success', 2));
   }
 
   onEdit(categoria:interCategoria) {
@@ -59,7 +60,7 @@ export class CategoriasComponent implements OnInit {
     this.dataService.sendPostRequest('categoria/update', { ...this.categoriaForm.value, id:this.categoriaSelect }).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha actualizado la información.', 'success', 2);
     })
   }
 
@@ -75,9 +76,8 @@ export class CategoriasComponent implements OnInit {
     this.dataService.sendPostRequest('categoria/create', this.categoriaForm.value).subscribe((resp: interResponse)=>{
       if (resp.empty) return console.log(resp.mensaje);
       this.onReset();
-      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value, null, 4));
+      alertify.notify('Se ha guardado la información.', 'success', 2);
     })
-    // display form values on success
   }
 
   onReset() {
